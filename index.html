@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Independent SMU IGD Generative AI module sequence planner with 12-, 6-, and 4-month pacing options.">
+  <title>SMU IGD Generative AI Module Planner</title>
+  <style>
+    :root {
+      --navy: #102a43;
+      --navy-2: #183d5d;
+      --blue: #1e5aa8;
+      --teal: #008c8c;
+      --gold: #d99a16;
+      --ink: #243b53;
+      --muted: #627d98;
+      --line: #d9e2ec;
+      --page: #f5f7f8;
+      --white: #ffffff;
+      --pale-blue: #eaf2fb;
+      --pale-teal: #e7f7f5;
+      --pale-gold: #fff5d6;
+      --pale-red: #fdecec;
+      --red: #b42318;
+      --shadow: 0 18px 50px rgba(16, 42, 67, .10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 85% 3%, rgba(0,140,140,.10), transparent 27rem),
+        linear-gradient(180deg, #f8fbfc 0, var(--page) 36rem);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    button, input { font: inherit; }
+    a { color: var(--blue); }
+    a:hover { color: var(--teal); }
+    .skip-link { position: absolute; left: -999px; top: 8px; z-index: 10; background: white; padding: 10px 14px; }
+    .skip-link:focus { left: 8px; }
+    .wrap { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+    .hero { color: white; background: linear-gradient(125deg, var(--navy), #153e61 62%, #086f75); padding: 70px 0 88px; overflow: hidden; position: relative; }
+    .hero::after { content: ""; position: absolute; width: 430px; height: 430px; right: -170px; top: -170px; border: 70px solid rgba(255,255,255,.055); border-radius: 50%; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 7px 11px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; background: rgba(255,255,255,.07); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #65e1d7; box-shadow: 0 0 0 4px rgba(101,225,215,.15); }
+    h1 { max-width: 850px; margin: 22px 0 18px; font-size: clamp(38px, 6vw, 68px); line-height: 1.02; letter-spacing: -.045em; }
+    .hero p { max-width: 760px; color: #d9eaf7; font-size: clamp(17px, 2vw, 21px); margin: 0; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .button { border: 0; border-radius: 12px; padding: 12px 16px; cursor: pointer; font-weight: 750; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .button.primary { background: white; color: var(--navy); }
+    .button.secondary { color: white; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.24); }
+    .button:focus-visible, .pace-button:focus-visible, .month-button:focus-visible { outline: 3px solid #76e3da; outline-offset: 3px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: -42px; position: relative; z-index: 2; }
+    .stat { background: white; padding: 22px; border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); }
+    .stat strong { color: var(--navy); font-size: 30px; line-height: 1; display: block; margin-bottom: 7px; }
+    .stat span { color: var(--muted); font-size: 14px; }
+    section { padding: 76px 0 0; }
+    .section-kicker { color: var(--teal); text-transform: uppercase; letter-spacing: .11em; font-size: 12px; font-weight: 850; }
+    h2 { color: var(--navy); font-size: clamp(28px, 4vw, 43px); letter-spacing: -.035em; line-height: 1.08; margin: 9px 0 14px; }
+    .lead { color: var(--muted); max-width: 760px; font-size: 17px; margin: 0 0 28px; }
+    .note { background: var(--pale-gold); border: 1px solid #f0d887; border-left: 5px solid var(--gold); padding: 15px 17px; border-radius: 12px; font-size: 14px; }
+    .hierarchy { display: grid; gap: 14px; margin-top: 28px; }
+    .tier { display: grid; grid-template-columns: 150px 1fr; background: white; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 8px 25px rgba(16,42,67,.05); }
+    .tier-label { background: var(--navy); color: white; padding: 20px 14px; display: grid; place-items: center; text-align: center; font-weight: 850; }
+    .tier-label span { display: block; font-size: 28px; line-height: 1; margin-bottom: 7px; }
+    .tier-body { padding: 19px 22px; }
+    .tier-body h3 { margin: 0 0 5px; color: var(--navy); font-size: 19px; }
+    .tier-body p { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { border-radius: 999px; background: var(--pale-blue); color: var(--blue); border: 1px solid #c9daf0; padding: 6px 10px; font-size: 12px; font-weight: 800; }
+    .chip.teal { background: var(--pale-teal); color: #047070; border-color: #b7e3de; }
+    .chip.gold { background: var(--pale-gold); color: #855b00; border-color: #efd882; }
+    .planner-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .planner-toolbar { padding: 25px; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fff, #f9fbfc); }
+    .toolbar-row { display: flex; justify-content: space-between; gap: 20px; align-items: center; flex-wrap: wrap; }
+    .pace-switch { display: inline-grid; grid-template-columns: repeat(3, 1fr); background: #edf2f5; border-radius: 14px; padding: 4px; gap: 4px; }
+    .pace-button { min-width: 112px; border: 0; background: transparent; border-radius: 10px; color: var(--muted); padding: 10px 13px; cursor: pointer; font-weight: 850; }
+    .pace-button[aria-selected="true"] { color: white; background: var(--navy); box-shadow: 0 4px 10px rgba(16,42,67,.18); }
+    .workload { display: flex; gap: 12px; align-items: center; color: var(--muted); font-size: 13px; }
+    .workload strong { color: var(--navy); }
+    .workload-meter { width: 110px; height: 8px; background: #e7edf1; border-radius: 99px; overflow: hidden; }
+    .workload-fill { height: 100%; border-radius: inherit; width: 33%; background: var(--teal); transition: width .25s ease, background .25s ease; }
+    .pace-copy { margin-top: 17px; color: var(--muted); max-width: 880px; }
+    .planner-body { display: grid; grid-template-columns: 270px 1fr; min-height: 520px; }
+    .month-nav { border-right: 1px solid var(--line); padding: 18px; background: #fbfcfd; }
+    .month-nav h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 5px 8px 12px; }
+    .month-list { display: grid; gap: 7px; }
+    .month-button { width: 100%; text-align: left; border: 1px solid transparent; background: transparent; border-radius: 11px; padding: 10px 11px; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .month-button span:first-child { font-weight: 800; }
+    .month-button small { border-radius: 99px; background: #e8eef2; padding: 2px 7px; font-weight: 800; }
+    .month-button[aria-selected="true"] { background: var(--pale-teal); color: #046d6d; border-color: #b9e2de; }
+    .month-detail { padding: 30px; }
+    .month-heading { display: flex; align-items: start; justify-content: space-between; gap: 18px; }
+    .month-heading h3 { margin: 0; color: var(--navy); font-size: 28px; line-height: 1.1; }
+    .bundle-pill { background: var(--pale-gold); color: #7d5700; padding: 7px 10px; border-radius: 999px; font-weight: 850; font-size: 12px; white-space: nowrap; }
+    .month-purpose { color: var(--muted); margin: 9px 0 23px; }
+    .module-stack { display: grid; gap: 11px; }
+    .module-card { display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: start; border: 1px solid var(--line); border-radius: 15px; padding: 16px; background: white; }
+    .module-step { width: 39px; height: 39px; display: grid; place-items: center; border-radius: 12px; background: var(--navy); color: white; font-weight: 900; }
+    .module-card h4 { margin: 0 0 4px; color: var(--navy); font-size: 16px; }
+    .module-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .module-code { color: var(--teal); font-size: 12px; font-weight: 900; letter-spacing: .06em; }
+    .official-link { white-space: nowrap; font-size: 12px; font-weight: 800; text-decoration: none; padding-top: 2px; }
+    .why-box { margin-top: 18px; background: var(--pale-blue); border-left: 4px solid var(--blue); border-radius: 12px; padding: 14px 16px; font-size: 14px; }
+    .warning { margin-top: 16px; background: var(--pale-red); border-left: 4px solid var(--red); border-radius: 12px; padding: 13px 15px; color: #7c251f; font-size: 13px; display: none; }
+    .directory-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .directory-card { background: white; border: 1px solid var(--line); border-radius: 17px; padding: 18px; }
+    .directory-card h3 { margin: 0 0 5px; color: var(--navy); font-size: 18px; }
+    .directory-card p { margin: 0 0 12px; color: var(--muted); font-size: 13px; }
+    .pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; margin-top: 10px; }
+    .pair-box { border: 1px solid var(--line); border-radius: 11px; padding: 10px; font-size: 12px; font-weight: 800; }
+    .pair.hr .pair-box { color: #603b8d; }
+    .pair.hr .pair-box:first-child { background: #f4effc; border-color: #d9c9f2; }
+    .pair.hr .pair-box:last-child { background: #eadff8; border-color: #c5ace9; }
+    .pair.hr .arrow { color: #7c52aa; }
+    .pair.learning .pair-box { color: #1f6d49; }
+    .pair.learning .pair-box:first-child { background: #eef8f2; border-color: #c7e8d3; }
+    .pair.learning .pair-box:last-child { background: #dcf1e5; border-color: #abd9bd; }
+    .pair.learning .arrow { color: #2f8a5e; }
+    .pair.marketing .pair-box { color: #934c38; }
+    .pair.marketing .pair-box:first-child { background: #fff0ec; border-color: #f3c8bb; }
+    .pair.marketing .pair-box:last-child { background: #ffe2d9; border-color: #eeb29f; }
+    .pair.marketing .arrow { color: #bd654c; }
+    .arrow { font-size: 18px; font-weight: 900; line-height: 1; }
+    .intake-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: white; }
+    table { width: 100%; border-collapse: collapse; min-width: 780px; }
+    th, td { text-align: left; padding: 13px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--navy); color: white; font-size: 12px; letter-spacing: .03em; }
+    td { font-size: 13px; }
+    tr:last-child td { border-bottom: 0; }
+    .open { color: #08756f; font-weight: 900; }
+    .completion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .completion-card { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+    .completion-card h3 { margin: 0 0 8px; color: var(--navy); }
+    .completion-card ul { margin: 13px 0 0; padding-left: 19px; color: var(--muted); }
+    .completion-card li { margin: 7px 0; }
+    .footer { margin-top: 76px; color: #d9eaf7; background: var(--navy); padding: 44px 0; }
+    .footer-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; }
+    .footer h2 { color: white; font-size: 25px; margin-top: 0; }
+    .footer p { max-width: 700px; font-size: 13px; color: #b9ccdb; }
+    .sources { display: grid; gap: 7px; align-content: start; }
+    .sources a { color: white; font-size: 13px; }
+    .fine-print { margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.16); color: #9db4c5; font-size: 12px; }
+    @media (max-width: 800px) {
+      .hero { padding-top: 50px; }
+      .stats, .directory-grid, .completion-grid, .footer-grid { grid-template-columns: 1fr; }
+      .planner-body { grid-template-columns: 1fr; }
+      .month-nav { border-right: 0; border-bottom: 1px solid var(--line); }
+      .month-list { grid-template-columns: repeat(3, 1fr); }
+      .month-button { text-align: center; justify-content: center; }
+      .month-button small { display: none; }
+      .tier { grid-template-columns: 1fr; }
+      .tier-label { display: flex; justify-content: flex-start; padding: 12px 18px; text-align: left; }
+      .tier-label div { display: flex; align-items: center; gap: 10px; }
+      .tier-label span { display: grid; place-items: center; width: 30px; height: 30px; margin: 0; border-radius: 50%; background: rgba(255,255,255,.14); font-size: 16px; }
+      .module-card { grid-template-columns: 42px 1fr; }
+      .official-link { grid-column: 2; }
+      .pace-switch { width: 100%; }
+      .pace-button { min-width: 0; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: min(100% - 22px, 1180px); }
+      .stats { margin-top: -28px; }
+      .month-list { grid-template-columns: repeat(2, 1fr); }
+      .month-detail { padding: 22px 17px; }
+      .month-heading { display: block; }
+      .bundle-pill { display: inline-block; margin-top: 10px; }
+      .tier-body { padding: 17px; }
+      .tier-body h3 { font-size: 18px; line-height: 1.25; }
+      .tier-body p { line-height: 1.55; }
+      .tier-body .chip { max-width: 100%; line-height: 1.35; overflow-wrap: anywhere; }
+      .pair { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); text-align: center; }
+    }
+    @media print {
+      body { background: white; }
+      .hero { padding: 28px 0; }
+      .hero-actions, .pace-switch, .month-nav { display: none !important; }
+      .stats { margin-top: 15px; }
+      section { padding-top: 34px; break-inside: avoid; }
+      .planner-body { grid-template-columns: 1fr; min-height: 0; }
+      .planner-card, .stat { box-shadow: none; }
+      .footer { margin-top: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#planner">Skip to pace planner</a>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span> SMU IGD module planner</div>
+      <h1>Plan the 12 modules in a sensible order.</h1>
+      <p>Compare recommended 12-, 6-, and 4-month sequences, see which modules fit together, and check SMU's currently published 2026 intakes.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#planner">View study plans</a>
+        <button class="button secondary" type="button" onclick="window.print()">Print / save as PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap stats" aria-label="Programme summary">
+      <div class="stat"><strong>12</strong><span>taught modules across two certificates</span></div>
+      <div class="stat"><strong>4 tiers</strong><span>foundation, governance, paired applications, synthesis</span></div>
+      <div class="stat"><strong>24 months</strong><span>maximum IGD candidature, subject to your official record</span></div>
+    </div>
+
+    <section aria-labelledby="hierarchy-title">
+      <div class="wrap">
+        <div class="section-kicker">Priority hierarchy</div>
+        <h2 id="hierarchy-title">What should come first - and why</h2>
+        <p class="lead">The official module numbers belong to two different certificates, so they do not form one obvious learning order. This hierarchy reorganises them by dependency.</p>
+        <div class="note"><strong>Important:</strong> this is a recommended learning sequence, not a claim that SMU formally enforces every arrow. Always follow any cohort-specific instruction from the Programme Office.</div>
+        <div class="hierarchy">
+          <article class="tier">
+            <div class="tier-label"><div><span>1</span>Foundations</div></div>
+            <div class="tier-body">
+              <h3>Understand, prompt, then ground</h3>
+              <p>Learn the GenAI landscape and prompt design before moving into LLM architecture, RAG and custom knowledge systems.</p>
+              <div class="chips"><span class="chip">E1 GenAI Foundations</span><span class="chip">E2 Prompt Engineering</span><span class="chip">A1 LLMs &amp; RAG</span></div>
+            </div>
+          </article>
+          <article class="tier">
+            <div class="tier-label"><div><span>2</span>Guardrails</div></div>
+            <div class="tier-body">
+              <h3>Add governance before repeated app building</h3>
+              <p>Bias, privacy, security, transparency and risk mitigation should shape every later application.</p>
+              <div class="chips"><span class="chip teal">E6 Responsible Use &amp; Ethical Management</span></div>
+            </div>
+          </article>
+          <article class="tier">
+            <div class="tier-label"><div><span>3</span>Domain pairs</div></div>
+            <div class="tier-body">
+              <h3>Learn the use case, then design the app</h3>
+              <p>Keep each context module close to its matching app-design module so concepts remain fresh.</p>
+              <div class="chips"><span class="chip gold">E3 HR context -> A2 HR apps</span><span class="chip gold">E5 Learning context -> A3 L&amp;D apps</span><span class="chip gold">E4 Marketing context -> A6 Marketing apps</span></div>
+            </div>
+          </article>
+          <article class="tier">
+            <div class="tier-label"><div><span>4</span>Synthesis</div></div>
+            <div class="tier-body">
+              <h3>Transfer the method into customer and regulated work</h3>
+              <p>Finish with customer-facing design and the governance-heavy compliance/legal application.</p>
+              <div class="chips"><span class="chip teal">A5 Sales &amp; Customer Service</span><span class="chip teal">A4 Compliance &amp; Legal</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="planner" aria-labelledby="planner-title">
+      <div class="wrap">
+        <div class="section-kicker">Interactive pace planner</div>
+        <h2 id="planner-title">Choose a pace, then click a month</h2>
+        <p class="lead">The planner combines modules by learning relationship. Faster plans require SMU to offer suitable dates and may not be possible in every intake cycle.</p>
+        <div class="note" style="margin-bottom:18px"><strong>Starting in August 2026?</strong> Based on SMU's currently published intakes, the practical one-module-per-month booking order is <strong>E2 in August, E1 in September, then A1 in October</strong>. The plans below show the ideal learning sequence when dates are flexible; adapt them to actual availability.</div>
+        <div class="planner-card">
+          <div class="planner-toolbar">
+            <div class="toolbar-row">
+              <div class="pace-switch" role="tablist" aria-label="Choose completion pace">
+                <button class="pace-button" role="tab" aria-selected="true" data-pace="12">12 months</button>
+                <button class="pace-button" role="tab" aria-selected="false" data-pace="6">6 months</button>
+                <button class="pace-button" role="tab" aria-selected="false" data-pace="4">4 months</button>
+              </div>
+              <div class="workload" aria-live="polite"><span><strong id="workload-label">Steady</strong><br><span id="workload-copy">1 module / month</span></span><div class="workload-meter" aria-hidden="true"><div class="workload-fill" id="workload-fill"></div></div></div>
+            </div>
+            <p class="pace-copy" id="pace-copy"></p>
+          </div>
+          <div class="planner-body">
+            <aside class="month-nav" aria-label="Plan months">
+              <h3>Select a month</h3>
+              <div class="month-list" id="month-list"></div>
+            </aside>
+            <div class="month-detail" id="month-detail" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="pairs-title">
+      <div class="wrap">
+        <div class="section-kicker">Plain-language directory</div>
+        <h2 id="pairs-title">The titles decoded into useful groups</h2>
+        <p class="lead">Use the short codes to discuss the plan with classmates. The official titles remain available through each module link.</p>
+        <div class="directory-grid">
+          <article class="directory-card"><h3>Core foundation</h3><p>The concepts used by every later module.</p><div class="chips"><span class="chip">E1 GenAI Foundations</span><span class="chip">E2 Prompting</span><span class="chip">A1 LLMs &amp; RAG</span></div></article>
+          <article class="directory-card"><h3>Governance foundation</h3><p>Risk and responsible-use lens for every build.</p><div class="chips"><span class="chip teal">E6 Responsible Use</span><span class="chip teal">A4 Compliance &amp; Legal</span></div></article>
+          <article class="directory-card"><h3>Human resources pair</h3><p>Context first, app design second.</p><div class="pair hr"><div class="pair-box">E3 Productivity &amp; HR</div><div class="arrow" aria-hidden="true">&rarr;</div><div class="pair-box">A2 HR Apps</div></div></article>
+          <article class="directory-card"><h3>Learning &amp; development pair</h3><p>Learning content first, app design second.</p><div class="pair learning"><div class="pair-box">E5 Learning Management</div><div class="arrow" aria-hidden="true">&rarr;</div><div class="pair-box">A3 L&amp;D Apps</div></div></article>
+          <article class="directory-card"><h3>Marketing pair</h3><p>Campaign use cases first, app design second.</p><div class="pair marketing"><div class="pair-box">E4 Digital Marketing</div><div class="arrow" aria-hidden="true">&rarr;</div><div class="pair-box">A6 Marketing &amp; Comms Apps</div></div></article>
+          <article class="directory-card"><h3>Customer-facing transfer</h3><p>Apply the same architecture to revenue and service workflows.</p><div class="chips"><span class="chip gold">A5 Sales &amp; Customer Service</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="intakes-title">
+      <div class="wrap">
+        <div class="section-kicker">Verified schedule snapshot</div>
+        <h2 id="intakes-title">Published future 2026 intakes</h2>
+        <p class="lead">Official individual module pages checked 9 Aug 2026. Status can change; recheck before registration. Dates below are not promises for future years.</p>
+        <div class="intake-wrap">
+          <table>
+            <thead><tr><th>Code</th><th>Short label</th><th>Published future 2026 intake(s)</th><th>Page status</th></tr></thead>
+            <tbody id="intake-body"></tbody>
+          </table>
+        </div>
+        <div class="note" style="margin-top:16px"><strong>Corrected date:</strong> A1 LLMs &amp; RAG has a 26-27 Oct 2026 Classroom Facilitated Training intake marked Open for Registration.</div>
+      </div>
+    </section>
+
+    <section aria-labelledby="finish-title">
+      <div class="wrap">
+        <div class="section-kicker">After the taught modules</div>
+        <h2 id="finish-title">The IGD is not finished at module 12</h2>
+        <p class="lead">Graduation also requires the overall IGD exam and one of the two applied/enrichment routes, all within the official candidature period.</p>
+        <div class="completion-grid">
+          <article class="completion-card"><h3>Route A: Integrated Learning Project (ILP)</h3><div class="chips"><span class="chip teal">10 weeks</span><span class="chip teal">team-based</span><span class="chip teal">portfolio output</span></div><ul><li>Best for a demonstrable GenAI/RAG/governance project.</li><li>Teams of up to five with faculty guidance.</li><li>Minimum class size applies; future dates must be confirmed.</li></ul></article>
+          <article class="completion-card"><h3>Route B: Enrichment workshops / networking</h3><div class="chips"><span class="chip gold">16 sessions</span><span class="chip gold">4 hours each</span><span class="chip gold">flexible</span></div><ul><li>Best for scheduling flexibility and broader career skills.</li><li>Track attendance carefully across all 16 sessions.</li><li>Schedules can change and minimum class size applies.</li></ul></article>
+        </div>
+        <div class="note" style="margin-top:16px"><strong>Exam strategy:</strong> attempt the first eligible exam after all module results are posted. SMU states there is no supplementary exam; after a failure, the learner must register for the next scheduled exam.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div><h2>Share the hierarchy, then verify the live dates.</h2><p>This independent reference simplifies the official module titles and suggests a coherent learning order. It is not an SMU timetable, offer letter, or guarantee that modules can be combined in a particular month.</p></div>
+        <div class="sources"><a href="https://academy.smu.edu.sg/courses/industry-graduate-diploma-generative-ai-large-language-models-and-ai-governance" target="_blank" rel="noopener">Official IGD programme page</a><a href="https://academy.smu.edu.sg/courses/industry-graduate-diplomas-igds" target="_blank" rel="noopener">Official IGD rules and FAQ</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection" target="_blank" rel="noopener">Ethics certificate schedule</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design" target="_blank" rel="noopener">Apps certificate schedule</a></div>
+      </div>
+      <div class="fine-print">Verified 9 Aug 2026. The two-year planning deadline should be confirmed against each learner's matriculation record and portal. Registration normally closes five calendar days before course start or when a class fills, whichever comes first.</div>
+    </div>
+  </footer>
+
+  <script>
+    const MODULES = {
+      E1: { code: "E1", short: "GenAI Foundations", full: "A Practical Approach to Generative AI", role: "Build the conceptual map: AI hierarchy, modalities, use cases and responsible adoption.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-1-practical-approach", intake: "24-25 Sep" },
+      E2: { code: "E2", short: "Prompt Engineering", full: "Prompt Engineering - Conversational AI and Design", role: "Learn prompt patterns, conversational design and techniques for reducing weak or hallucinated answers.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-2-prompt-engineering", intake: "20-21 Aug" },
+      E3: { code: "E3", short: "Productivity & HR Context", full: "Applications of Generative AI - Business Productivity and Human Resource", role: "Understand business-productivity and HR use cases before designing a specialised HR app.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-3-applications", intake: "29 Sep-8 Oct evenings; 19-20 Oct" },
+      E4: { code: "E4", short: "Digital Marketing Context", full: "Application of Generative AI in Digital Marketing", role: "Learn campaign, content and customer-engagement use cases before building marketing applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-4-application", intake: "14-15 Sep; 20-29 Oct evenings" },
+      E5: { code: "E5", short: "Learning Management Context", full: "Application of Generative AI in Learning Management", role: "Learn content, curriculum and assessment use cases before designing L&D applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-5-application", intake: "7-8 Sep; 8-17 Sep evenings" },
+      E6: { code: "E6", short: "Responsible Use", full: "Responsible Use and Ethical Management of Generative AI", role: "Add bias, privacy, transparency, security and governance controls before repeated app building.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-6-responsible-use-and", intake: "18-27 Aug evenings; 24-25 Aug" },
+      A1: { code: "A1", short: "LLMs & RAG", full: "Practical Approach to Large Language Models and Retrieval Augmented Generation", role: "Learn the system architecture: LLMs, RAG, custom knowledge solutions, testing, safety and feedback.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-1", intake: "26-27 Oct" },
+      A2: { code: "A2", short: "HR Apps", full: "Gen AI Apps Design and Prompt Engineering in Human Resource", role: "Apply prompting and LLM/RAG concepts to HR tools and workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-2", intake: "9-10 Sep" },
+      A3: { code: "A3", short: "L&D Apps", full: "Gen AI Apps Design and Prompt Engineering in Learning and Development", role: "Apply the architecture to learning tools, content and engagement.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-3", intake: "21-22 Sep" },
+      A4: { code: "A4", short: "Compliance & Legal Apps", full: "Gen AI Apps Design and Prompt Engineering in Compliance and Legal", role: "Synthesize app design and governance in a highly regulated domain.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-4", intake: "17-18 Aug; 22-23 Oct" },
+      A5: { code: "A5", short: "Sales & Service Apps", full: "Gen AI Apps Design and Prompt Engineering in Sales and Customer Service", role: "Transfer the app-design method into customer-facing revenue and service workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-5", intake: "27-28 Aug" },
+      A6: { code: "A6", short: "Marketing & Comms Apps", full: "Gen AI Apps Design and Prompt Engineering in Marketing and Communications", role: "Apply marketing context, prompts and architecture to deployable communication tools.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-6", intake: "3-4 Sep" }
+    };
+
+    const PLANS = {
+      12: {
+        label: "Steady", load: "1 module / month", meter: "33%", color: "var(--teal)",
+        copy: "Best for working professionals managing cost and assessment load. Domain context modules are followed by their matching app-design modules.",
+        months: [
+          { title: "Build the conceptual map", ids: ["E1"], why: "Start with the broad GenAI landscape before specialising." },
+          { title: "Develop prompt fluency", ids: ["E2"], why: "Turn the conceptual base into practical interaction and design skill." },
+          { title: "Understand the system", ids: ["A1"], why: "LLMs and RAG become the common technical architecture for later apps." },
+          { title: "Install the guardrails", ids: ["E6"], why: "Governance now shapes every later domain build." },
+          { title: "Learn the HR use case", ids: ["E3"], why: "Understand productivity and HR workflows before designing the app." },
+          { title: "Build the HR application", ids: ["A2"], why: "Apply E3 while its workflow and risk context are fresh." },
+          { title: "Learn the L&D use case", ids: ["E5"], why: "Build context in learning content, curriculum and assessment." },
+          { title: "Build the L&D application", ids: ["A3"], why: "Apply E5 and the A1 architecture to learning tools." },
+          { title: "Learn the marketing use case", ids: ["E4"], why: "Build context in content, campaign and engagement workflows." },
+          { title: "Build the marketing application", ids: ["A6"], why: "Apply E4 and A1 to marketing and communication tools." },
+          { title: "Transfer to customer workflows", ids: ["A5"], why: "Extend the same design method into sales and service." },
+          { title: "Finish with regulated synthesis", ids: ["A4"], why: "Close with a governance-heavy application after E6 and repeated design practice." }
+        ]
+      },
+      6: {
+        label: "Accelerated", load: "2 modules / month", meter: "66%", color: "var(--gold)",
+        copy: "Pairs related modules in the same month. Plan the context module before the app-design module and leave time for both assessments.",
+        months: [
+          { title: "GenAI and prompting foundations", ids: ["E1", "E2"], why: "Combine broad understanding with immediate prompt practice." },
+          { title: "Architecture and governance", ids: ["A1", "E6"], why: "Learn how the system works, then place responsible-use controls around it." },
+          { title: "Human resources pair", ids: ["E3", "A2"], why: "Learn HR/productivity use cases first, then design the HR application." },
+          { title: "Learning and development pair", ids: ["E5", "A3"], why: "Keep learning context and application design together." },
+          { title: "Marketing pair", ids: ["E4", "A6"], why: "Keep campaign context and app design together." },
+          { title: "Customer and regulated synthesis", ids: ["A5", "A4"], why: "Finish by transferring the method to customer workflows and compliance/legal work." }
+        ]
+      },
+      4: {
+        label: "Intensive", load: "3 modules / month", meter: "100%", color: "var(--red)",
+        copy: "A theoretical fastest path. It demands roughly six classroom days per month plus assessments and depends heavily on compatible SMU dates.",
+        months: [
+          { title: "Complete the foundation stack", ids: ["E1", "E2", "A1"], why: "Build concepts, prompt fluency and LLM/RAG architecture before domain applications." },
+          { title: "Governance and HR bundle", ids: ["E6", "E3", "A2"], why: "Install the risk lens, then complete one full context-to-app pair." },
+          { title: "Learning pair plus regulated transfer", ids: ["E5", "A3", "A4"], why: "Complete the L&D pair and apply the governance base to compliance/legal design." },
+          { title: "Marketing pair plus customer transfer", ids: ["E4", "A6", "A5"], why: "Complete the marketing pair and finish with customer-facing application design." }
+        ]
+      }
+    };
+
+    let currentPace = 12;
+    let currentMonth = 0;
+
+    function renderPlan(pace) {
+      currentPace = Number(pace);
+      currentMonth = 0;
+      const plan = PLANS[currentPace];
+      document.querySelectorAll(".pace-button").forEach(button => button.setAttribute("aria-selected", String(Number(button.dataset.pace) === currentPace)));
+      document.getElementById("workload-label").textContent = plan.label;
+      document.getElementById("workload-copy").textContent = plan.load;
+      const fill = document.getElementById("workload-fill");
+      fill.style.width = plan.meter;
+      fill.style.background = plan.color;
+      document.getElementById("pace-copy").textContent = plan.copy;
+      const list = document.getElementById("month-list");
+      list.innerHTML = plan.months.map((month, index) => `<button class="month-button" type="button" aria-selected="${index === 0}" data-index="${index}"><span>Month ${index + 1}</span><small>${month.ids.length} module${month.ids.length > 1 ? "s" : ""}</small></button>`).join("");
+      list.querySelectorAll("button").forEach(button => button.addEventListener("click", () => selectMonth(Number(button.dataset.index))));
+      selectMonth(0);
+    }
+
+    function selectMonth(index) {
+      currentMonth = index;
+      const plan = PLANS[currentPace];
+      const month = plan.months[index];
+      document.querySelectorAll(".month-button").forEach(button => button.setAttribute("aria-selected", String(Number(button.dataset.index) === index)));
+      const modules = month.ids.map((id, step) => {
+        const module = MODULES[id];
+        return `<article class="module-card"><div class="module-step">${step + 1}</div><div><div class="module-code">${module.code}</div><h4>${module.short}</h4><p>${module.role}<br><span title="Official SMU module title"><strong>Official:</strong> ${module.full}</span></p></div><a class="official-link" href="${module.url}" target="_blank" rel="noopener">Official page -></a></article>`;
+      }).join("");
+      document.getElementById("month-detail").innerHTML = `<div class="month-heading"><div><div class="section-kicker">Month ${index + 1} of ${plan.months.length}</div><h3>${month.title}</h3></div><span class="bundle-pill">${month.ids.length} module${month.ids.length > 1 ? " bundle" : ""}</span></div><p class="month-purpose">Take the modules in the numbered order shown below.</p><div class="module-stack">${modules}</div><div class="why-box"><strong>Why this combination:</strong> ${month.why}</div><div class="warning" style="display:${currentPace === 4 ? "block" : "none"}"><strong>Four-month warning:</strong> this pace may be impossible if official dates overlap, fill, or are not published. Protect the 75% attendance requirement and assessment time.</div>`;
+    }
+
+    function renderIntakes() {
+      const order = ["E1","E2","E3","E4","E5","E6","A1","A2","A3","A4","A5","A6"];
+      document.getElementById("intake-body").innerHTML = order.map(id => { const module = MODULES[id]; return `<tr><td><strong>${module.code}</strong></td><td>${module.short}</td><td>${module.intake}</td><td class="open">Open*</td></tr>`; }).join("");
+    }
+
+    document.querySelectorAll(".pace-button").forEach(button => button.addEventListener("click", () => renderPlan(button.dataset.pace)));
+    renderPlan(12);
+    renderIntakes();
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+name: Planner feedback
+description: Suggest an improvement or report incorrect planner information
+title: "[Feedback]: "
+labels:
+  - feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the planner. Please do not include student IDs or other private information.
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Feedback type
+      options:
+        - Incorrect or outdated schedule
+        - Feature request
+        - Module sequence suggestion
+        - Accessibility or display problem
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: What should be changed, and why?
+      placeholder: Describe the issue or suggestion.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL
+      description: For schedule corrections, link to the relevant official SMU Academy page.
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add screenshots or other useful context if available.
+
