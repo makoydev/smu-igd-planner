@@ -42,4 +42,4 @@ jobs:
           gh issue create \
             --title "Re-verify module intakes (snapshot is $age_days days old)" \
             --label reverify \
-            --body "$(printf 'The intake snapshot in index.html was last verified on **%s**.\n\nCheck each official page and update \`intake\`/\`status\` in the \`MODULES\` object, then update the \`VERIFIED\` constant and run \`node scripts/validate.js\` (steps in the README).\n\n%s' "$verified" "$urls")"
+            --body "$(printf 'The intake snapshot in index.html was last verified on **%s**.\n\nCheck each official page and update `intake`/`status` in the `MODULES` object, then update the `VERIFIED` constant and run `node scripts/validate.js` (steps in the README).\n\n%s' "$verified" "$urls")"
