@@ -1,0 +1,45 @@
+name: Reverification reminder
+
+# SMU Academy's site sits behind bot protection, so intake data cannot be
+# checked automatically. This instead opens a reminder issue once the
+# snapshot in index.html is older than the threshold.
+
+on:
+  schedule:
+    - cron: "0 2 * * 1" # every Monday 02:00 UTC
+  workflow_dispatch:
+    inputs:
+      min_age_days:
+        description: "Open a reminder if the snapshot is at least this many days old"
+        default: "30"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open reminder issue if snapshot is stale
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MIN_AGE_DAYS: ${{ inputs.min_age_days || '30' }}
+        run: |
+          verified=$(grep -o 'const VERIFIED = "[^"]*"' index.html | cut -d'"' -f2)
+          age_days=$(( ( $(date +%s) - $(date -d "$verified" +%s) ) / 86400 ))
+          echo "Snapshot verified $verified ($age_days days ago); threshold $MIN_AGE_DAYS days"
+          if [ "$age_days" -lt "$MIN_AGE_DAYS" ]; then
+            echo "Snapshot is fresh enough; nothing to do"
+            exit 0
+          fi
+          if [ "$(gh issue list --label reverify --state open --json number --jq length)" != "0" ]; then
+            echo "A reminder issue is already open"
+            exit 0
+          fi
+          urls=$(grep -o 'url: "[^"]*"' index.html | cut -d'"' -f2 | sed 's/^/- [ ] /')
+          gh issue create \
+            --title "Re-verify module intakes (snapshot is $age_days days old)" \
+            --label reverify \
+            --body "$(printf 'The intake snapshot in index.html was last verified on **%s**.\n\nCheck each official page and update \`intake\`/\`status\` in the \`MODULES\` object, then update the \`VERIFIED\` constant and run \`node scripts/validate.js\` (steps in the README).\n\n%s' "$verified" "$urls")"

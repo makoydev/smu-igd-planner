@@ -447,6 +447,22 @@
 
     document.querySelectorAll("[data-verified]").forEach(el => { el.textContent = VERIFIED; });
 
+    // Show a warning above the intake table once the snapshot is older than 60 days.
+    function renderStaleNotice(now = Date.now()) {
+      const daysOld = Math.floor((now - new Date(VERIFIED).getTime()) / 86400000);
+      const existing = document.getElementById("stale-notice");
+      if (existing) existing.remove();
+      if (daysOld <= 60) return;
+      const notice = document.createElement("div");
+      notice.className = "note";
+      notice.id = "stale-notice";
+      notice.style.marginBottom = "16px";
+      notice.innerHTML = `<strong>This snapshot is ${daysOld} days old.</strong> Intakes and registration status have likely changed; treat the table below as history and check the official pages instead.`;
+      const intakeWrap = document.querySelector(".intake-wrap");
+      intakeWrap.parentNode.insertBefore(notice, intakeWrap);
+    }
+    renderStaleNotice();
+
     const paceFromHash = (location.hash.match(/pace=(12|6|4)\b/) || [])[1];
     renderPlan(paceFromHash || 12);
     renderIntakes();

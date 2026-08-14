@@ -4,6 +4,8 @@ An independent, interactive planner for the 12 taught modules in SMU Academy's I
 
 The planner compares 12-, 6-, and 4-month learning sequences, groups related modules, and links back to the official SMU Academy pages.
 
+**Live site:** <https://makoydev.github.io/smu-igd-planner/> (deployed automatically from `main` via GitHub Pages)
+
 > [!IMPORTANT]
 > The intake table is a static snapshot verified on **9 August 2026**. Course dates and registration status can change. Always confirm details on the linked official SMU Academy pages before registering.
 
@@ -29,6 +31,13 @@ node scripts/validate.js
 
 The same script runs in GitHub Actions on every push and pull request (`.github/workflows/validate.yml`).
 
+## Keeping the data fresh
+
+SMU Academy's site is served behind bot protection, so intake data cannot be checked or scraped automatically — updates are manual by design. Two safeguards keep staleness visible:
+
+- The page shows a warning above the intake table once the snapshot is more than 60 days old.
+- A weekly GitHub Action (`.github/workflows/reverify-reminder.yml`) opens a reminder issue with a checklist of the 12 official pages once the snapshot is more than 30 days old.
+
 ## Share feedback
 
 Classmates can use [GitHub Issues](https://github.com/makoydev/smu-igd-planner/issues) to suggest a feature, report incorrect schedule data, or propose a better module sequence. Please avoid posting student IDs, contact details, or other private information.
@@ -49,11 +58,10 @@ When changing an intake:
 ## Roadmap toward dynamic updates
 
 - Move module and intake records from the HTML into a validated JSON data file.
-- Display a per-record verification date and a clear stale-data warning on the page itself.
-- Add automated link (HTTP) checks in GitHub Actions; data-shape and plan-completeness checks are already covered by `scripts/validate.js`.
-- Investigate a scheduled updater only if SMU provides a stable permitted data source; keep human review before publishing schedule changes.
+- Display a per-record verification date alongside each intake.
 - Add filtering for date, delivery format, registration status, and workload.
 - Add date-conflict detection between bundled modules in the faster plans.
+- Revisit automated schedule checks only if SMU ever provides a permitted data source; their site's bot protection currently rules out both scraping and automated link checks.
 
 ## Disclaimer
 
