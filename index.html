@@ -42,7 +42,7 @@
     .skip-link { position: absolute; left: -999px; top: 8px; z-index: 10; background: white; padding: 10px 14px; }
     .skip-link:focus { left: 8px; }
     .wrap { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
-    .hero { color: white; background: linear-gradient(125deg, var(--navy), #153e61 62%, #086f75); padding: 70px 0 88px; overflow: hidden; position: relative; }
+    .hero { color: white; background: linear-gradient(125deg, var(--navy), #153e61 62%, #086f75); padding: 52px 0 72px; overflow: hidden; position: relative; }
     .hero::after { content: ""; position: absolute; width: 430px; height: 430px; right: -170px; top: -170px; border: 70px solid rgba(255,255,255,.055); border-radius: 50%; }
     .eyebrow { display: inline-flex; align-items: center; gap: 9px; padding: 7px 11px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; background: rgba(255,255,255,.07); }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: #65e1d7; box-shadow: 0 0 0 4px rgba(101,225,215,.15); }
@@ -125,7 +125,11 @@
     .pair.marketing .pair-box:last-child { background: #ffe2d9; border-color: #eeb29f; }
     .pair.marketing .arrow { color: #bd654c; }
     .arrow { font-size: 18px; font-weight: 900; line-height: 1; }
+    .table-shell { position: relative; }
     .intake-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: white; }
+    .table-fade { position: absolute; top: 0; right: 0; bottom: 0; width: 44px; border-radius: 0 16px 16px 0; background: linear-gradient(270deg, rgba(16,42,67,.18), transparent); pointer-events: none; opacity: 0; transition: opacity .2s ease; }
+    .table-shell.can-scroll .table-fade { opacity: 1; }
+    .scroll-hint { color: var(--muted); font-size: 12px; margin: 8px 2px 0; text-align: right; }
     table { width: 100%; border-collapse: collapse; min-width: 780px; }
     th, td { text-align: left; padding: 13px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
     th { background: var(--navy); color: white; font-size: 12px; letter-spacing: .03em; }
@@ -152,8 +156,7 @@
       .planner-body { grid-template-columns: 1fr; }
       .month-nav { border-right: 0; border-bottom: 1px solid var(--line); }
       .month-list { grid-template-columns: repeat(3, 1fr); }
-      .month-button { text-align: center; justify-content: center; }
-      .month-button small { display: none; }
+      .month-button { text-align: center; justify-content: center; flex-direction: column; gap: 3px; }
       .tier { grid-template-columns: 1fr; }
       .tier-label { display: flex; justify-content: flex-start; padding: 12px 18px; text-align: left; }
       .tier-label div { display: flex; align-items: center; gap: 10px; }
@@ -195,7 +198,7 @@
     <div class="wrap">
       <div class="eyebrow"><span class="dot"></span> Independent student guide</div>
       <h1>SMU IGD Module Planner</h1>
-      <p>Compare recommended 12-, 6-, and 4-month sequences, see which modules fit together, and check SMU's currently published 2026 intakes.</p>
+      <p>Compare 12-, 6-, and 4-month sequences, see which modules pair up, and check the published 2026 intakes.</p>
       <div class="hero-actions">
         <a class="button primary" href="#planner">View study plans</a>
         <button class="button secondary" type="button" onclick="window.print()">Print / save as PDF</button>
@@ -214,8 +217,8 @@
       <div class="wrap">
         <div class="section-kicker">Suggested order</div>
         <h2 id="hierarchy-title">Which modules to take first</h2>
-        <p class="lead">The official module numbers belong to two different certificates, so they do not form one obvious learning order. This page reorders them by dependency.</p>
-        <div class="note"><strong>Important:</strong> this is a recommended learning sequence, not a claim that SMU formally enforces every arrow. Always follow any cohort-specific instruction from the Programme Office.</div>
+        <p class="lead">The official module numbers span two certificates, so they aren't a learning order by themselves. This page reorders them by dependency.</p>
+        <div class="note"><strong>Note:</strong> this is a suggested sequence, not an SMU rule. Instructions from the Programme Office always win.</div>
         <div class="hierarchy">
           <article class="tier">
             <div class="tier-label"><div><span>1</span>Foundations</div></div>
@@ -257,8 +260,8 @@
       <div class="wrap">
         <div class="section-kicker">Interactive pace planner</div>
         <h2 id="planner-title">Choose a pace, then click a month</h2>
-        <p class="lead">The planner combines modules by learning relationship. Faster plans require SMU to offer suitable dates and may not be possible in every intake cycle.</p>
-        <div class="note" style="margin-bottom:18px"><strong>Starting in August 2026?</strong> Based on SMU's currently published intakes, the practical one-module-per-month booking order is <strong>E2 in August, E1 in September, then A1 in October</strong>. The plans below show the ideal learning sequence when dates are flexible; adapt them to actual availability.</div>
+        <p class="lead">Faster plans depend on SMU offering compatible dates, so treat them as targets, not guarantees.</p>
+        <div class="note" style="margin-bottom:18px"><strong>Starting in August 2026?</strong> Based on published intakes, the practical booking order is <strong>E2 (Aug), E1 (Sep), A1 (Oct)</strong>. Adapt the plans below to actual availability.</div>
         <div class="planner-card">
           <div class="planner-toolbar">
             <div class="toolbar-row">
@@ -302,15 +305,18 @@
       <div class="wrap">
         <div class="section-kicker">Verified schedule snapshot</div>
         <h2 id="intakes-title">Published future 2026 intakes</h2>
-        <p class="lead">Official individual module pages checked <span data-verified>9 Aug 2026</span>. Status can change; recheck before registration. Dates below are not promises for future years.</p>
-        <div class="intake-wrap">
-          <table>
-            <thead><tr><th>Code</th><th>Short label</th><th>Published future 2026 intake(s)</th><th>Page status</th></tr></thead>
-            <tbody id="intake-body"></tbody>
-          </table>
+        <p class="lead">Checked against each official module page on <span data-verified>9 Aug 2026</span>. Dates and status change - recheck before registering.</p>
+        <div class="table-shell">
+          <div class="intake-wrap">
+            <table>
+              <thead><tr><th>Code</th><th>Short label</th><th>Published future 2026 intake(s)</th><th>Page status</th></tr></thead>
+              <tbody id="intake-body"></tbody>
+            </table>
+          </div>
+          <div class="table-fade" aria-hidden="true"></div>
         </div>
-        <p class="footnote">Status is as published on each official module page when verified on <span data-verified>9 Aug 2026</span>. Classes can fill or close at any time; always recheck the official page before registering.</p>
-        <div class="note" style="margin-top:16px"><strong>Corrected date:</strong> A1 LLMs &amp; RAG has a 26-27 Oct 2026 Classroom Facilitated Training intake marked Open for Registration.</div>
+        <p class="scroll-hint" id="intake-scroll-hint" hidden>Swipe sideways to see the whole table &rarr;</p>
+        <p class="footnote">Status is as published on each official module page when verified on <span data-verified>9 Aug 2026</span>. Classes can fill or close at any time; always recheck before registering.</p>
       </div>
     </section>
 
@@ -413,7 +419,7 @@
       fill.style.background = plan.color;
       document.getElementById("pace-copy").textContent = plan.copy;
       const list = document.getElementById("month-list");
-      list.innerHTML = plan.months.map((month, index) => `<button class="month-button" type="button" aria-selected="${index === 0}" data-index="${index}"><span>Month ${index + 1}</span><small>${month.ids.length} module${month.ids.length > 1 ? "s" : ""}</small></button>`).join("");
+      list.innerHTML = plan.months.map((month, index) => `<button class="month-button" type="button" aria-selected="${index === 0}" data-index="${index}"><span>Month ${index + 1}</span><small>${month.ids.join(" + ")}</small></button>`).join("");
       selectMonth(0);
     }
 
@@ -466,6 +472,20 @@
     const paceFromHash = (location.hash.match(/pace=(12|6|4)\b/) || [])[1];
     renderPlan(paceFromHash || 12);
     renderIntakes();
+
+    // Show a swipe hint and edge shadow while the intake table has horizontally hidden columns.
+    const intakeWrap = document.querySelector(".intake-wrap");
+    const tableShell = document.querySelector(".table-shell");
+    const scrollHint = document.getElementById("intake-scroll-hint");
+    function updateTableScrollHint() {
+      const scrollable = intakeWrap.scrollWidth > intakeWrap.clientWidth + 1;
+      const atEnd = intakeWrap.scrollLeft + intakeWrap.clientWidth >= intakeWrap.scrollWidth - 1;
+      tableShell.classList.toggle("can-scroll", scrollable && !atEnd);
+      scrollHint.hidden = !scrollable;
+    }
+    intakeWrap.addEventListener("scroll", updateTableScrollHint, { passive: true });
+    window.addEventListener("resize", updateTableScrollHint);
+    updateTableScrollHint();
   </script>
 </body>
 </html>
