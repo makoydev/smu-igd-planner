@@ -194,7 +194,7 @@
   <header class="hero">
     <div class="wrap">
       <div class="eyebrow"><span class="dot"></span> SMU IGD module planner</div>
-      <h1>Plan the 12 modules in a sensible order.</h1>
+      <h1>A suggested order for the 12 IGD modules</h1>
       <p>Compare recommended 12-, 6-, and 4-month sequences, see which modules fit together, and check SMU's currently published 2026 intakes.</p>
       <div class="hero-actions">
         <a class="button primary" href="#planner">View study plans</a>
@@ -206,21 +206,21 @@
   <main>
     <div class="wrap stats" aria-label="Programme summary">
       <div class="stat"><strong>12</strong><span>taught modules across two certificates</span></div>
-      <div class="stat"><strong>4 tiers</strong><span>foundation, governance, paired applications, synthesis</span></div>
+      <div class="stat"><strong>4 tiers</strong><span>foundation, governance, paired applications, final apps</span></div>
       <div class="stat"><strong>24 months</strong><span>maximum IGD candidature, subject to your official record</span></div>
     </div>
 
     <section aria-labelledby="hierarchy-title">
       <div class="wrap">
-        <div class="section-kicker">Priority hierarchy</div>
-        <h2 id="hierarchy-title">What should come first - and why</h2>
-        <p class="lead">The official module numbers belong to two different certificates, so they do not form one obvious learning order. This hierarchy reorganises them by dependency.</p>
+        <div class="section-kicker">Suggested order</div>
+        <h2 id="hierarchy-title">Which modules to take first</h2>
+        <p class="lead">The official module numbers belong to two different certificates, so they do not form one obvious learning order. This page reorders them by dependency.</p>
         <div class="note"><strong>Important:</strong> this is a recommended learning sequence, not a claim that SMU formally enforces every arrow. Always follow any cohort-specific instruction from the Programme Office.</div>
         <div class="hierarchy">
           <article class="tier">
             <div class="tier-label"><div><span>1</span>Foundations</div></div>
             <div class="tier-body">
-              <h3>Understand, prompt, then ground</h3>
+              <h3>Start with the shared basics</h3>
               <p>Learn the GenAI landscape and prompt design before moving into LLM architecture, RAG and custom knowledge systems.</p>
               <div class="chips"><span class="chip">E1 GenAI Foundations</span><span class="chip">E2 Prompt Engineering</span><span class="chip">A1 LLMs &amp; RAG</span></div>
             </div>
@@ -228,7 +228,7 @@
           <article class="tier">
             <div class="tier-label"><div><span>2</span>Guardrails</div></div>
             <div class="tier-body">
-              <h3>Add governance before repeated app building</h3>
+              <h3>Add governance early</h3>
               <p>Bias, privacy, security, transparency and risk mitigation should shape every later application.</p>
               <div class="chips"><span class="chip teal">E6 Responsible Use &amp; Ethical Management</span></div>
             </div>
@@ -242,10 +242,10 @@
             </div>
           </article>
           <article class="tier">
-            <div class="tier-label"><div><span>4</span>Synthesis</div></div>
+            <div class="tier-label"><div><span>4</span>Final apps</div></div>
             <div class="tier-body">
-              <h3>Transfer the method into customer and regulated work</h3>
-              <p>Finish with customer-facing design and the governance-heavy compliance/legal application.</p>
+              <h3>Finish with the remaining app modules</h3>
+              <p>The customer-facing module and the compliance/legal module both build on everything before them.</p>
               <div class="chips"><span class="chip teal">A5 Sales &amp; Customer Service</span><span class="chip teal">A4 Compliance &amp; Legal</span></div>
             </div>
           </article>
@@ -285,8 +285,8 @@
     <section aria-labelledby="pairs-title">
       <div class="wrap">
         <div class="section-kicker">Plain-language directory</div>
-        <h2 id="pairs-title">The titles decoded into useful groups</h2>
-        <p class="lead">Use the short codes to discuss the plan with classmates. The official titles remain available through each module link.</p>
+        <h2 id="pairs-title">The modules, grouped</h2>
+        <p class="lead">The official titles are long, so this site uses short codes (E1-E6, A1-A6). The full titles are on each module's official page.</p>
         <div class="directory-grid">
           <article class="directory-card"><h3>Core foundation</h3><p>The concepts used by every later module.</p><div class="chips"><span class="chip">E1 GenAI Foundations</span><span class="chip">E2 Prompting</span><span class="chip">A1 LLMs &amp; RAG</span></div></article>
           <article class="directory-card"><h3>Governance foundation</h3><p>Risk and responsible-use lens for every build.</p><div class="chips"><span class="chip teal">E6 Responsible Use</span><span class="chip teal">A4 Compliance &amp; Legal</span></div></article>
@@ -331,7 +331,7 @@
   <footer class="footer">
     <div class="wrap">
       <div class="footer-grid">
-        <div><h2>Share the hierarchy, then verify the live dates.</h2><p>This independent reference simplifies the official module titles and suggests a coherent learning order. It is not an SMU timetable, offer letter, or guarantee that modules can be combined in a particular month.</p></div>
+        <div><h2>Check the official pages before registering.</h2><p>This is an independent student-made reference. It suggests a learning order and shortens the official module titles, but it is not an SMU timetable, offer letter, or guarantee that modules can be combined in a particular month.</p></div>
         <div class="sources"><a href="https://academy.smu.edu.sg/courses/industry-graduate-diploma-generative-ai-large-language-models-and-ai-governance" target="_blank" rel="noopener">Official IGD programme page</a><a href="https://academy.smu.edu.sg/courses/industry-graduate-diplomas-igds" target="_blank" rel="noopener">Official IGD rules and FAQ</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection" target="_blank" rel="noopener">Ethics certificate schedule</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design" target="_blank" rel="noopener">Apps certificate schedule</a></div>
       </div>
       <div class="fine-print">Verified <span data-verified>9 Aug 2026</span>. The two-year planning deadline should be confirmed against each learner's matriculation record and portal. Registration normally closes five calendar days before course start or when a class fills, whichever comes first.</div>
@@ -343,7 +343,7 @@
     const VERIFIED = "9 Aug 2026";
 
     const MODULES = {
-      E1: { code: "E1", short: "GenAI Foundations", full: "A Practical Approach to Generative AI", role: "Build the conceptual map: AI hierarchy, modalities, use cases and responsible adoption.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-1-practical-approach", intake: "24-25 Sep", status: "Open" },
+      E1: { code: "E1", short: "GenAI Foundations", full: "A Practical Approach to Generative AI", role: "The big picture: AI hierarchy, modalities, use cases and responsible adoption.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-1-practical-approach", intake: "24-25 Sep", status: "Open" },
       E2: { code: "E2", short: "Prompt Engineering", full: "Prompt Engineering - Conversational AI and Design", role: "Learn prompt patterns, conversational design and techniques for reducing weak or hallucinated answers.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-2-prompt-engineering", intake: "20-21 Aug", status: "Open" },
       E3: { code: "E3", short: "Productivity & HR Context", full: "Applications of Generative AI - Business Productivity and Human Resource", role: "Understand business-productivity and HR use cases before designing a specialised HR app.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-3-applications", intake: "29 Sep-8 Oct evenings; 19-20 Oct", status: "Open" },
       E4: { code: "E4", short: "Digital Marketing Context", full: "Application of Generative AI in Digital Marketing", role: "Learn campaign, content and customer-engagement use cases before building marketing applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-4-application", intake: "14-15 Sep; 20-29 Oct evenings", status: "Open" },
@@ -362,40 +362,40 @@
         label: "Steady", load: "1 module / month", meter: "33%", color: "var(--teal)",
         copy: "Best for working professionals managing cost and assessment load. Domain context modules are followed by their matching app-design modules.",
         months: [
-          { title: "Build the conceptual map", ids: ["E1"], why: "Start with the broad GenAI landscape before specialising." },
-          { title: "Develop prompt fluency", ids: ["E2"], why: "Turn the conceptual base into practical interaction and design skill." },
-          { title: "Understand the system", ids: ["A1"], why: "LLMs and RAG become the common technical architecture for later apps." },
-          { title: "Install the guardrails", ids: ["E6"], why: "Governance now shapes every later domain build." },
-          { title: "Learn the HR use case", ids: ["E3"], why: "Understand productivity and HR workflows before designing the app." },
-          { title: "Build the HR application", ids: ["A2"], why: "Apply E3 while its workflow and risk context are fresh." },
-          { title: "Learn the L&D use case", ids: ["E5"], why: "Build context in learning content, curriculum and assessment." },
-          { title: "Build the L&D application", ids: ["A3"], why: "Apply E5 and the A1 architecture to learning tools." },
-          { title: "Learn the marketing use case", ids: ["E4"], why: "Build context in content, campaign and engagement workflows." },
-          { title: "Build the marketing application", ids: ["A6"], why: "Apply E4 and A1 to marketing and communication tools." },
-          { title: "Transfer to customer workflows", ids: ["A5"], why: "Extend the same design method into sales and service." },
-          { title: "Finish with regulated synthesis", ids: ["A4"], why: "Close with a governance-heavy application after E6 and repeated design practice." }
+          { title: "GenAI foundations", ids: ["E1"], why: "Start with the broad GenAI landscape before specialising." },
+          { title: "Prompt engineering", ids: ["E2"], why: "Put the E1 concepts into practice with hands-on prompting." },
+          { title: "LLMs and RAG", ids: ["A1"], why: "LLMs and RAG are the technical base for all the later app modules." },
+          { title: "Responsible use", ids: ["E6"], why: "Cover governance before starting the app-design modules." },
+          { title: "HR context", ids: ["E3"], why: "Understand productivity and HR workflows before designing the app." },
+          { title: "HR app design", ids: ["A2"], why: "Apply E3 while its workflow and risk context are fresh." },
+          { title: "L&D context", ids: ["E5"], why: "Cover learning content, curriculum and assessment use cases first." },
+          { title: "L&D app design", ids: ["A3"], why: "Apply E5 and the A1 architecture to learning tools." },
+          { title: "Marketing context", ids: ["E4"], why: "Cover content, campaign and engagement use cases first." },
+          { title: "Marketing app design", ids: ["A6"], why: "Apply E4 and A1 to marketing and communication tools." },
+          { title: "Sales and customer service", ids: ["A5"], why: "The same design approach, applied to sales and service workflows." },
+          { title: "Compliance and legal", ids: ["A4"], why: "The most governance-heavy application, best taken after E6 and plenty of design practice." }
         ]
       },
       6: {
         label: "Accelerated", load: "2 modules / month", meter: "66%", color: "var(--gold)",
         copy: "Pairs related modules in the same month. Plan the context module before the app-design module and leave time for both assessments.",
         months: [
-          { title: "GenAI and prompting foundations", ids: ["E1", "E2"], why: "Combine broad understanding with immediate prompt practice." },
+          { title: "GenAI basics and prompting", ids: ["E1", "E2"], why: "Broad understanding first, prompt practice right after." },
           { title: "Architecture and governance", ids: ["A1", "E6"], why: "Learn how the system works, then place responsible-use controls around it." },
           { title: "Human resources pair", ids: ["E3", "A2"], why: "Learn HR/productivity use cases first, then design the HR application." },
           { title: "Learning and development pair", ids: ["E5", "A3"], why: "Keep learning context and application design together." },
           { title: "Marketing pair", ids: ["E4", "A6"], why: "Keep campaign context and app design together." },
-          { title: "Customer and regulated synthesis", ids: ["A5", "A4"], why: "Finish by transferring the method to customer workflows and compliance/legal work." }
+          { title: "Sales/service and compliance", ids: ["A5", "A4"], why: "Finish with the customer-facing and compliance/legal applications." }
         ]
       },
       4: {
         label: "Intensive", load: "3 modules / month", meter: "100%", color: "var(--red)",
         copy: "A theoretical fastest path. It demands roughly six classroom days per month plus assessments and depends heavily on compatible SMU dates.",
         months: [
-          { title: "Complete the foundation stack", ids: ["E1", "E2", "A1"], why: "Build concepts, prompt fluency and LLM/RAG architecture before domain applications." },
-          { title: "Governance and HR bundle", ids: ["E6", "E3", "A2"], why: "Install the risk lens, then complete one full context-to-app pair." },
-          { title: "Learning pair plus regulated transfer", ids: ["E5", "A3", "A4"], why: "Complete the L&D pair and apply the governance base to compliance/legal design." },
-          { title: "Marketing pair plus customer transfer", ids: ["E4", "A6", "A5"], why: "Complete the marketing pair and finish with customer-facing application design." }
+          { title: "All three foundation modules", ids: ["E1", "E2", "A1"], why: "Cover the concepts, prompting and LLM/RAG architecture before the domain modules." },
+          { title: "Responsible use plus the HR pair", ids: ["E6", "E3", "A2"], why: "Take the governance module first, then complete one full context-to-app pair." },
+          { title: "L&D pair plus compliance and legal", ids: ["E5", "A3", "A4"], why: "Complete the L&D pair and apply the governance base to compliance/legal design." },
+          { title: "Marketing pair plus sales and service", ids: ["E4", "A6", "A5"], why: "Complete the marketing pair and finish with customer-facing application design." }
         ]
       }
     };
