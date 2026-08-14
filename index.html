@@ -429,7 +429,7 @@
     }
 
     function renderIntakes() {
-      document.getElementById("intake-body").innerHTML = Object.keys(MODULES).map(id => { const module = MODULES[id]; return `<tr><td><strong>${module.code}</strong></td><td>${module.short}</td><td>${module.intake}</td><td class="${module.status === "Open" ? "open" : "closed"}">${module.status}</td></tr>`; }).join("");
+      document.getElementById("intake-body").innerHTML = Object.keys(MODULES).map(id => { const module = MODULES[id]; return `<tr><td><strong>${module.code}</strong></td><td>${module.short}</td><td>${module.intake}</td><td><a class="${module.status === "Open" ? "open" : "closed"}" href="${module.url}" target="_blank" rel="noopener" title="Open the official ${module.code} page">${module.status}</a></td></tr>`; }).join("");
     }
 
     document.querySelector(".pace-switch").addEventListener("click", event => {
