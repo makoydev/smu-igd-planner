@@ -17,6 +17,18 @@ python3 -m http.server 8000
 
 Then visit <http://localhost:8000>.
 
+The selected pace is kept in the URL, so you can link someone straight to a specific plan: append `#pace=12`, `#pace=6`, or `#pace=4`.
+
+## Testing
+
+A dependency-free validation script checks the embedded data: script syntax, required module fields, official SMU Academy link format, and that every pace plan schedules all 12 modules exactly once. It also warns when the verified snapshot is more than 60 days old.
+
+```bash
+node scripts/validate.js
+```
+
+The same script runs in GitHub Actions on every push and pull request (`.github/workflows/validate.yml`).
+
 ## Share feedback
 
 Classmates can use [GitHub Issues](https://github.com/makoydev/smu-igd-planner/issues) to suggest a feature, report incorrect schedule data, or propose a better module sequence. Please avoid posting student IDs, contact details, or other private information.
@@ -28,19 +40,20 @@ The app is intentionally self-contained for now. The editable module records are
 When changing an intake:
 
 1. Verify it against the module's official SMU Academy page.
-2. Update the module's `intake` value.
-3. Update every visible “verified” date and any date-specific callout.
-4. Open the app on desktop and mobile widths and test all three pace options.
-5. Include the source URL and verification date in the pull request.
+2. Update the module's `intake` and `status` values.
+3. Update the `VERIFIED` constant (it fills every visible “verified” date) and any date-specific callout.
+4. Run `node scripts/validate.js` and make sure every check passes.
+5. Open the app on desktop and mobile widths and test all three pace options.
+6. Include the source URL and verification date in the pull request.
 
 ## Roadmap toward dynamic updates
 
 - Move module and intake records from the HTML into a validated JSON data file.
-- Display a per-record verification date and a clear stale-data warning.
-- Add automated link and data-shape checks in GitHub Actions.
+- Display a per-record verification date and a clear stale-data warning on the page itself.
+- Add automated link (HTTP) checks in GitHub Actions; data-shape and plan-completeness checks are already covered by `scripts/validate.js`.
 - Investigate a scheduled updater only if SMU provides a stable permitted data source; keep human review before publishing schedule changes.
 - Add filtering for date, delivery format, registration status, and workload.
-- Add tests for plan completeness, duplicate modules, and date conflicts.
+- Add date-conflict detection between bundled modules in the faster plans.
 
 ## Disclaimer
 

@@ -132,6 +132,8 @@
     td { font-size: 13px; }
     tr:last-child td { border-bottom: 0; }
     .open { color: #08756f; font-weight: 900; }
+    .closed { color: var(--red); font-weight: 900; }
+    .footnote { color: var(--muted); font-size: 12px; margin: 10px 2px 0; }
     .completion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .completion-card { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
     .completion-card h3 { margin: 0 0 8px; color: var(--navy); }
@@ -300,13 +302,14 @@
       <div class="wrap">
         <div class="section-kicker">Verified schedule snapshot</div>
         <h2 id="intakes-title">Published future 2026 intakes</h2>
-        <p class="lead">Official individual module pages checked 9 Aug 2026. Status can change; recheck before registration. Dates below are not promises for future years.</p>
+        <p class="lead">Official individual module pages checked <span data-verified>9 Aug 2026</span>. Status can change; recheck before registration. Dates below are not promises for future years.</p>
         <div class="intake-wrap">
           <table>
             <thead><tr><th>Code</th><th>Short label</th><th>Published future 2026 intake(s)</th><th>Page status</th></tr></thead>
             <tbody id="intake-body"></tbody>
           </table>
         </div>
+        <p class="footnote">Status is as published on each official module page when verified on <span data-verified>9 Aug 2026</span>. Classes can fill or close at any time; always recheck the official page before registering.</p>
         <div class="note" style="margin-top:16px"><strong>Corrected date:</strong> A1 LLMs &amp; RAG has a 26-27 Oct 2026 Classroom Facilitated Training intake marked Open for Registration.</div>
       </div>
     </section>
@@ -331,24 +334,27 @@
         <div><h2>Share the hierarchy, then verify the live dates.</h2><p>This independent reference simplifies the official module titles and suggests a coherent learning order. It is not an SMU timetable, offer letter, or guarantee that modules can be combined in a particular month.</p></div>
         <div class="sources"><a href="https://academy.smu.edu.sg/courses/industry-graduate-diploma-generative-ai-large-language-models-and-ai-governance" target="_blank" rel="noopener">Official IGD programme page</a><a href="https://academy.smu.edu.sg/courses/industry-graduate-diplomas-igds" target="_blank" rel="noopener">Official IGD rules and FAQ</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection" target="_blank" rel="noopener">Ethics certificate schedule</a><a href="https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design" target="_blank" rel="noopener">Apps certificate schedule</a></div>
       </div>
-      <div class="fine-print">Verified 9 Aug 2026. The two-year planning deadline should be confirmed against each learner's matriculation record and portal. Registration normally closes five calendar days before course start or when a class fills, whichever comes first.</div>
+      <div class="fine-print">Verified <span data-verified>9 Aug 2026</span>. The two-year planning deadline should be confirmed against each learner's matriculation record and portal. Registration normally closes five calendar days before course start or when a class fills, whichever comes first.</div>
     </div>
   </footer>
 
   <script>
+    // Single source for every visible "verified" date on the page.
+    const VERIFIED = "9 Aug 2026";
+
     const MODULES = {
-      E1: { code: "E1", short: "GenAI Foundations", full: "A Practical Approach to Generative AI", role: "Build the conceptual map: AI hierarchy, modalities, use cases and responsible adoption.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-1-practical-approach", intake: "24-25 Sep" },
-      E2: { code: "E2", short: "Prompt Engineering", full: "Prompt Engineering - Conversational AI and Design", role: "Learn prompt patterns, conversational design and techniques for reducing weak or hallucinated answers.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-2-prompt-engineering", intake: "20-21 Aug" },
-      E3: { code: "E3", short: "Productivity & HR Context", full: "Applications of Generative AI - Business Productivity and Human Resource", role: "Understand business-productivity and HR use cases before designing a specialised HR app.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-3-applications", intake: "29 Sep-8 Oct evenings; 19-20 Oct" },
-      E4: { code: "E4", short: "Digital Marketing Context", full: "Application of Generative AI in Digital Marketing", role: "Learn campaign, content and customer-engagement use cases before building marketing applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-4-application", intake: "14-15 Sep; 20-29 Oct evenings" },
-      E5: { code: "E5", short: "Learning Management Context", full: "Application of Generative AI in Learning Management", role: "Learn content, curriculum and assessment use cases before designing L&D applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-5-application", intake: "7-8 Sep; 8-17 Sep evenings" },
-      E6: { code: "E6", short: "Responsible Use", full: "Responsible Use and Ethical Management of Generative AI", role: "Add bias, privacy, transparency, security and governance controls before repeated app building.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-6-responsible-use-and", intake: "18-27 Aug evenings; 24-25 Aug" },
-      A1: { code: "A1", short: "LLMs & RAG", full: "Practical Approach to Large Language Models and Retrieval Augmented Generation", role: "Learn the system architecture: LLMs, RAG, custom knowledge solutions, testing, safety and feedback.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-1", intake: "26-27 Oct" },
-      A2: { code: "A2", short: "HR Apps", full: "Gen AI Apps Design and Prompt Engineering in Human Resource", role: "Apply prompting and LLM/RAG concepts to HR tools and workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-2", intake: "9-10 Sep" },
-      A3: { code: "A3", short: "L&D Apps", full: "Gen AI Apps Design and Prompt Engineering in Learning and Development", role: "Apply the architecture to learning tools, content and engagement.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-3", intake: "21-22 Sep" },
-      A4: { code: "A4", short: "Compliance & Legal Apps", full: "Gen AI Apps Design and Prompt Engineering in Compliance and Legal", role: "Synthesize app design and governance in a highly regulated domain.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-4", intake: "17-18 Aug; 22-23 Oct" },
-      A5: { code: "A5", short: "Sales & Service Apps", full: "Gen AI Apps Design and Prompt Engineering in Sales and Customer Service", role: "Transfer the app-design method into customer-facing revenue and service workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-5", intake: "27-28 Aug" },
-      A6: { code: "A6", short: "Marketing & Comms Apps", full: "Gen AI Apps Design and Prompt Engineering in Marketing and Communications", role: "Apply marketing context, prompts and architecture to deployable communication tools.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-6", intake: "3-4 Sep" }
+      E1: { code: "E1", short: "GenAI Foundations", full: "A Practical Approach to Generative AI", role: "Build the conceptual map: AI hierarchy, modalities, use cases and responsible adoption.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-1-practical-approach", intake: "24-25 Sep", status: "Open" },
+      E2: { code: "E2", short: "Prompt Engineering", full: "Prompt Engineering - Conversational AI and Design", role: "Learn prompt patterns, conversational design and techniques for reducing weak or hallucinated answers.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-2-prompt-engineering", intake: "20-21 Aug", status: "Open" },
+      E3: { code: "E3", short: "Productivity & HR Context", full: "Applications of Generative AI - Business Productivity and Human Resource", role: "Understand business-productivity and HR use cases before designing a specialised HR app.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-3-applications", intake: "29 Sep-8 Oct evenings; 19-20 Oct", status: "Open" },
+      E4: { code: "E4", short: "Digital Marketing Context", full: "Application of Generative AI in Digital Marketing", role: "Learn campaign, content and customer-engagement use cases before building marketing applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-4-application", intake: "14-15 Sep; 20-29 Oct evenings", status: "Open" },
+      E5: { code: "E5", short: "Learning Management Context", full: "Application of Generative AI in Learning Management", role: "Learn content, curriculum and assessment use cases before designing L&D applications.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-5-application", intake: "7-8 Sep; 8-17 Sep evenings", status: "Open" },
+      E6: { code: "E6", short: "Responsible Use", full: "Responsible Use and Ethical Management of Generative AI", role: "Add bias, privacy, transparency, security and governance controls before repeated app building.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-generative-ai-ethics-and-data-protection-module-6-responsible-use-and", intake: "18-27 Aug evenings; 24-25 Aug", status: "Open" },
+      A1: { code: "A1", short: "LLMs & RAG", full: "Practical Approach to Large Language Models and Retrieval Augmented Generation", role: "Learn the system architecture: LLMs, RAG, custom knowledge solutions, testing, safety and feedback.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-1", intake: "26-27 Oct", status: "Open" },
+      A2: { code: "A2", short: "HR Apps", full: "Gen AI Apps Design and Prompt Engineering in Human Resource", role: "Apply prompting and LLM/RAG concepts to HR tools and workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-2", intake: "9-10 Sep", status: "Open" },
+      A3: { code: "A3", short: "L&D Apps", full: "Gen AI Apps Design and Prompt Engineering in Learning and Development", role: "Apply the architecture to learning tools, content and engagement.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-3", intake: "21-22 Sep", status: "Open" },
+      A4: { code: "A4", short: "Compliance & Legal Apps", full: "Gen AI Apps Design and Prompt Engineering in Compliance and Legal", role: "Synthesize app design and governance in a highly regulated domain.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-4", intake: "17-18 Aug; 22-23 Oct", status: "Open" },
+      A5: { code: "A5", short: "Sales & Service Apps", full: "Gen AI Apps Design and Prompt Engineering in Sales and Customer Service", role: "Transfer the app-design method into customer-facing revenue and service workflows.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-5", intake: "27-28 Aug", status: "Open" },
+      A6: { code: "A6", short: "Marketing & Comms Apps", full: "Gen AI Apps Design and Prompt Engineering in Marketing and Communications", role: "Apply marketing context, prompts and architecture to deployable communication tools.", url: "https://academy.smu.edu.sg/courses/advanced-certificate-gen-ai-app-design-mod-6", intake: "3-4 Sep", status: "Open" }
     };
 
     const PLANS = {
@@ -395,11 +401,9 @@
     };
 
     let currentPace = 12;
-    let currentMonth = 0;
 
     function renderPlan(pace) {
       currentPace = Number(pace);
-      currentMonth = 0;
       const plan = PLANS[currentPace];
       document.querySelectorAll(".pace-button").forEach(button => button.setAttribute("aria-selected", String(Number(button.dataset.pace) === currentPace)));
       document.getElementById("workload-label").textContent = plan.label;
@@ -410,12 +414,10 @@
       document.getElementById("pace-copy").textContent = plan.copy;
       const list = document.getElementById("month-list");
       list.innerHTML = plan.months.map((month, index) => `<button class="month-button" type="button" aria-selected="${index === 0}" data-index="${index}"><span>Month ${index + 1}</span><small>${month.ids.length} module${month.ids.length > 1 ? "s" : ""}</small></button>`).join("");
-      list.querySelectorAll("button").forEach(button => button.addEventListener("click", () => selectMonth(Number(button.dataset.index))));
       selectMonth(0);
     }
 
     function selectMonth(index) {
-      currentMonth = index;
       const plan = PLANS[currentPace];
       const month = plan.months[index];
       document.querySelectorAll(".month-button").forEach(button => button.setAttribute("aria-selected", String(Number(button.dataset.index) === index)));
@@ -427,12 +429,26 @@
     }
 
     function renderIntakes() {
-      const order = ["E1","E2","E3","E4","E5","E6","A1","A2","A3","A4","A5","A6"];
-      document.getElementById("intake-body").innerHTML = order.map(id => { const module = MODULES[id]; return `<tr><td><strong>${module.code}</strong></td><td>${module.short}</td><td>${module.intake}</td><td class="open">Open*</td></tr>`; }).join("");
+      document.getElementById("intake-body").innerHTML = Object.keys(MODULES).map(id => { const module = MODULES[id]; return `<tr><td><strong>${module.code}</strong></td><td>${module.short}</td><td>${module.intake}</td><td class="${module.status === "Open" ? "open" : "closed"}">${module.status}</td></tr>`; }).join("");
     }
 
-    document.querySelectorAll(".pace-button").forEach(button => button.addEventListener("click", () => renderPlan(button.dataset.pace)));
-    renderPlan(12);
+    document.querySelector(".pace-switch").addEventListener("click", event => {
+      const button = event.target.closest(".pace-button");
+      if (!button) return;
+      renderPlan(button.dataset.pace);
+      // Keep the chosen pace shareable via the URL without adding history entries.
+      history.replaceState(null, "", "#pace=" + button.dataset.pace);
+    });
+
+    document.getElementById("month-list").addEventListener("click", event => {
+      const button = event.target.closest(".month-button");
+      if (button) selectMonth(Number(button.dataset.index));
+    });
+
+    document.querySelectorAll("[data-verified]").forEach(el => { el.textContent = VERIFIED; });
+
+    const paceFromHash = (location.hash.match(/pace=(12|6|4)\b/) || [])[1];
+    renderPlan(paceFromHash || 12);
     renderIntakes();
   </script>
 </body>
